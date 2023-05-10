@@ -110,7 +110,7 @@ class UserFriendStatus(APIView):
         return Response(response_dict)
 
 
-class ResponseToFriendRequest(UpdateAPIView):
+class ResponseToFriendRequest(APIView):
     queryset = FriendRequestModel.objects.all()
     permission_classes = (IsAuthenticated,)
 
@@ -152,6 +152,7 @@ class ResponseToFriendRequest(UpdateAPIView):
 
 class DeleteFromFriends(DestroyAPIView):
     permission_classes = (IsAuthenticated, )
+    serializer_class = UserSerializer
 
     def destroy(self, request, *args, **kwargs):
         friends_username = request.data.get("username")

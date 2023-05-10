@@ -1,0 +1,380 @@
+openapi: 3.0.2
+info:
+  title: friends_service
+  version: 1.0.0
+  description: API for friends
+paths:
+  /api/v1/users/:
+    get:
+      operationId: listUserModels
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createUserModel
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - api
+  /api/v1/users/{id}/:
+    get:
+      operationId: retrieveUserModel
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u043F\u043E\u043B\u044C\
+          \u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C."
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateUserModel
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u043F\u043E\u043B\u044C\
+          \u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C."
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateUserModel
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u043F\u043E\u043B\u044C\
+          \u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C."
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyUserModel
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u043F\u043E\u043B\u044C\
+          \u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C."
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/incoming_requests/:
+    get:
+      operationId: listFriendRequestModels
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IncomingFriendRequest'
+          description: ''
+      tags:
+      - api
+  /api/v1/outgoing_requests/:
+    get:
+      operationId: listFriendRequestModels
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutgoingFriendRequest'
+          description: ''
+      tags:
+      - api
+  /api/v1/friends/:
+    get:
+      operationId: listFriendRequestModels
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+      tags:
+      - api
+  /api/v1/status/{username}/:
+    get:
+      operationId: retrieveUserFriendStatus
+      description: ''
+      parameters:
+      - name: username
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v1/login/:
+    post:
+      operationId: createAuthToken
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+      tags:
+      - api
+  /api/v1/send_friend_request/:
+    post:
+      operationId: createFriendRequestModel
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FriendRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FriendRequest'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendRequest'
+          description: ''
+      tags:
+      - api
+  /api/v1/confrim_request/:
+    put:
+      operationId: updateFriendRequestModel
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v1/delete_from_friends/:
+    delete:
+      operationId: destroyUser
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          pattern: ^[\w.@+-]+\z
+          maxLength: 15
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+      required:
+      - username
+      - password
+    IncomingFriendRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sender:
+          type: integer
+        content:
+          type: string
+          maxLength: 50
+      required:
+      - sender
+    OutgoingFriendRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        receiver:
+          type: integer
+        content:
+          type: string
+          maxLength: 50
+      required:
+      - receiver
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - username
+      - password
+    FriendRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        receiver:
+          type: string
+        content:
+          type: string
+          maxLength: 50
+      required:
+      - receiver
