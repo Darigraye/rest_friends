@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - DATABASE_NAME=postgres
+      - USER_NAME=postgres
+      - DATABASE_PASSWORD=postgres
+  web:
+    build: .
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_NAME=postgres
+      - USER_NAME=postgres
+      - DATABASE_PASSWORD=postgres
+    depends_on:
+      - db
