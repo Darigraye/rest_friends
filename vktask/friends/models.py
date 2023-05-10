@@ -2,8 +2,12 @@ from django.db.models import (
     Model,
     CharField,
     ForeignKey,
+    ManyToManyField,
     TextChoices,
     DO_NOTHING,
+    CheckConstraint,
+    Q,
+    F,
 )
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -15,7 +19,15 @@ class UserModel(AbstractUser):
                                     null=False,
                                     validators=[UnicodeUsernameValidator()],
                                     verbose_name="имя пользователя")
-    friends: ForeignKey = ForeignKey("UserModel", on_delete=DO_NOTHING, verbose_name="друзья")
+    friends: ManyToManyField = ManyToManyField("UserModel", blank=True, symmetrical=True, verbose_name="друзья")
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        db_table = "User"
+        verbose_name = "пользователь"
+        verbose_name_plural = "пользователи"
 
 
 class FriendRequestModel(Model):
@@ -37,3 +49,17 @@ class FriendRequestModel(Model):
                                   default=Status.WAITING,
                                   verbose_name="статус заявки")
     content: CharField = CharField(max_length=50, blank=True, verbose_name="сопроводительный текст заявки")
+
+    def __str__(self):
+        return f"{self.pk}.от {self.sender} к {self.receiver}"
+
+    class Meta:
+        db_table = "FriendRequest"
+        verbose_name = "запрос в друзья"
+        verbose_name_plural = "запросы в друзья"
+        constraints = [
+            CheckConstraint(
+                check=~Q(receiver_id=F("sender_id")),
+                name="check_the_same_user"
+            ),
+        ]
