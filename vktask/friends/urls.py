@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.authtoken import views
 from rest_framework import routers
+from rest_framework.schemas import get_schema_view
 
 from .views import (
     UserViewSet,
@@ -25,5 +26,7 @@ urlpatterns = [
     path("friends/", ListFriends.as_view()),
     path("status/<username>/", UserFriendStatus.as_view()),
     path("confrim_request/", ResponseToFriendRequest.as_view()),
-    path("delete_from_friends/", DeleteFromFriends.as_view())
+    path("delete_from_friends/", DeleteFromFriends.as_view()),
+    path("openapi/", get_schema_view(title="friends_service", description="API for friends", version="1.0.0",
+                                     public=True))
 ]

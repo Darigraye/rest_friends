@@ -15,11 +15,19 @@ from .serializers import (UserSerializer,
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    """
+    Viewset which provides interaction with UserModel
+    (auth., registration, deleting user etc.) by methods
+     GET, POST, PUT, PATCH, DELETE
+    """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all()
 
 
 class MakeFriendRequest(CreateAPIView):
+    """
+    Provides interface for sending friend request
+    """
     serializer_class = FriendRequestSerializer
     queryset = FriendRequestModel.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -53,6 +61,9 @@ class MakeFriendRequest(CreateAPIView):
 
 
 class ListIncomingRequests(ListAPIView):
+    """
+    Represents incoming friend requests for current user
+    """
     serializer_class = IncomingFriendRequestSerializer
     queryset = FriendRequestModel.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -63,6 +74,9 @@ class ListIncomingRequests(ListAPIView):
 
 
 class ListOutgoingRequests(ListIncomingRequests):
+    """
+    Represents outgoing friend requests for current user
+    """
     serializer_class = OutgoingFriendRequestSerializer
 
     def get_queryset(self):
@@ -71,6 +85,9 @@ class ListOutgoingRequests(ListIncomingRequests):
 
 
 class ListFriends(ListAPIView):
+    """
+    Represents every user who is friend of current user
+    """
     queryset = FriendRequestModel.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
@@ -80,6 +97,10 @@ class ListFriends(ListAPIView):
 
 
 class UserFriendStatus(APIView):
+    """
+    Responses status of adressed user:
+    friend, incoming req., outgoing req. nothing
+    """
     permission_classes = (IsAuthenticated, )
     def get(self, request, *args, **kwargs):
         friend_name = kwargs.get("username", None)
@@ -110,7 +131,11 @@ class UserFriendStatus(APIView):
         return Response(response_dict)
 
 
-class ResponseToFriendRequest(UpdateAPIView):
+class ResponseToFriendRequest(APIView):
+    """
+    Provides interface for response on friend request
+    from certain user
+    """
     queryset = FriendRequestModel.objects.all()
     permission_classes = (IsAuthenticated,)
 
@@ -151,7 +176,12 @@ class ResponseToFriendRequest(UpdateAPIView):
 
 
 class DeleteFromFriends(DestroyAPIView):
+    """
+    Provide interface for delete user from
+    friends
+    """
     permission_classes = (IsAuthenticated, )
+    serializer_class = UserSerializer
 
     def destroy(self, request, *args, **kwargs):
         friends_username = request.data.get("username")
