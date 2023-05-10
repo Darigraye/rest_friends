@@ -1,28 +1,36 @@
 from rest_framework.relations import SlugRelatedField
-from rest_framework.serializers import(
+from rest_framework.serializers import (
     ModelSerializer,
     HiddenField,
     CurrentUserDefault,
     ValidationError,
-    CharField
+    CharField,
 )
 from .models import UserModel, FriendRequestModel
 
 
 class UserSerializer(ModelSerializer):
     def create(self, validated_data):
-        return UserModel.objects.create_user(
-            **validated_data
-        )
+        return UserModel.objects.create_user(**validated_data)
 
     class Meta:
         model = UserModel
-        fields = ("id", "username", "email", "first_name", "last_name", "last_login", "password")
+        fields = (
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "last_login",
+            "password",
+        )
         extra_kwargs = {"password": {"write_only": True}}
 
 
 class FriendRequestSerializer(ModelSerializer):
-    receiver: SlugRelatedField = SlugRelatedField(slug_field="username", queryset=UserModel.objects.all())
+    receiver: SlugRelatedField = SlugRelatedField(
+        slug_field="username", queryset=UserModel.objects.all()
+    )
     sender: HiddenField = HiddenField(default=CurrentUserDefault())
     status: HiddenField = HiddenField(default=FriendRequestModel.Status.WAITING)
 
@@ -34,14 +42,20 @@ class FriendRequestSerializer(ModelSerializer):
 
     def validate(self, data):
         if data["sender"] == data["receiver"]:
-            raise ValidationError("вы не можете отправлять запросы в друзья самому себе")
+            raise ValidationError(
+                "вы не можете отправлять запросы в друзья самому себе"
+            )
 
-        if UserModel.objects.filter(username=data["sender"], friends__username=data["receiver"]).exists():
+        if UserModel.objects.filter(
+            username=data["sender"], friends__username=data["receiver"]
+        ).exists():
             raise ValidationError("этот человек уже есть у вас в друзьях")
 
-        if FriendRequestModel.objects.filter(receiver=data["receiver"],
-                                             sender=data["sender"],
-                                             status=FriendRequestModel.Status.WAITING).exists():
+        if FriendRequestModel.objects.filter(
+            receiver=data["receiver"],
+            sender=data["sender"],
+            status=FriendRequestModel.Status.WAITING,
+        ).exists():
             raise ValidationError("вы уже отправили заявку пользователю")
 
         return data

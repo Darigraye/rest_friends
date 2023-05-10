@@ -27,6 +27,13 @@ urlpatterns = [
     path("status/<username>/", UserFriendStatus.as_view()),
     path("confrim_request/", ResponseToFriendRequest.as_view()),
     path("delete_from_friends/", DeleteFromFriends.as_view()),
-    path("openapi/", get_schema_view(title="friends_service", description="API for friends", version="1.0.0",
-                                     public=True))
+    path(
+        "openapi/",
+        get_schema_view(
+            title="friends_service",
+            description="API for friends",
+            version="1.0.0",
+            public=True,
+        ),
+    ),
 ]
